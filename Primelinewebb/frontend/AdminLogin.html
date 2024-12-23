@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Toastify CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/react-toastify/7.0.4/ReactToastify.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a202c;
+            color: white;
+        }
+
+        .form-control:disabled,
+        .form-control[readonly] {
+            background-color: #2d3748;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-start min-vh-100" style="padding-top: 100px;">
+        <div class="bg-dark p-4 rounded shadow-lg w-100" style="max-width: 400px;">
+            <h1 class="text-center mb-4">Admin Login</h1>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername">Admin Username</label>
+                    <input type="text" class="form-control" id="adminUsername" name="adminUsername" placeholder="" />
+                    <div class="text-danger" id="adminUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <input type="password" class="form-control" id="adminPassword" name="adminPassword"
+                        placeholder="" />
+                    <div class="text-danger" id="adminPasswordError"></div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
+                    <button type="button" class="btn btn-danger" id="logOffButton" style="display: none;">Log
+                        out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-toastify/7.0.4/ReactToastify.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const adminToken = localStorage.getItem('adminJWT');
+            const adminUsernameInput = document.getElementById('adminUsername');
+            const adminPasswordInput = document.getElementById('adminPassword');
+            const loginButton = document.getElementById('loginButton');
+            const logOffButton = document.getElementById('logOffButton');
+            const adminUsernameError = document.getElementById('adminUsernameError');
+            const adminPasswordError = document.getElementById('adminPasswordError');
+
+            if (adminToken) {
+                adminUsernameInput.value = "Admin";
+                adminPasswordInput.value = "Admin@123";
+                adminUsernameInput.disabled = true;
+                adminPasswordInput.disabled = true;
+                loginButton.style.display = 'none';
+                logOffButton.style.display = 'inline-block';
+            } else {
+                loginButton.style.display = 'inline-block';
+                logOffButton.style.display = 'none';
+            }
+
+            logOffButton.addEventListener('click', function () {
+                localStorage.removeItem('adminJWT');
+                adminUsernameInput.value = "";
+                adminPasswordInput.value = "";
+                adminUsernameInput.disabled = false;
+                adminPasswordInput.disabled = false;
+                loginButton.style.display = 'inline-block';
+                logOffButton.style.display = 'none';
+                alert("Logged off successfully");
+            });
+
+            document.getElementById('adminLoginForm').addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const values = {
+                    adminUsername: adminUsernameInput.value,
+                    adminPassword: adminPasswordInput.value
+                };
+
+                // Clear previous errors
+                adminUsernameError.textContent = '';
+                adminPasswordError.textContent = '';
+
+                // Simple validation
+                if (!values.adminUsername) {
+                    adminUsernameError.textContent = 'Admin username required';
+                    return;
+                }
+                if (!values.adminPassword) {
+                    adminPasswordError.textContent = 'Admin password required';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/admin/adminlogin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(values)
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        const { token } = data;
+                        localStorage.setItem('adminJWT', token);
+                        // Set a timeout to remove the token after 1 hour (3600000 milliseconds)
+                        setTimeout(() => {
+                            localStorage.removeItem('adminJWT');
+                            alert('Your session has expired. Please log in again.');
+                            // window.location.href = '/admin'; // Redirect to the admin login page
+                        }, 3600000);
+
+                        window.location.href = '/admin';
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error("There was an error logging in!", error);
+                    alert("An unexpected error occurred. Please try again later.");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

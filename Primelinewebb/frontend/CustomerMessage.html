@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Messages</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+   
+    @media(max-width:768px){
+        .table{
+        overflow-x: scroll;
+    }
+    }
+</style>
+<body>
+    <div class="container mt-5">
+        <div><a href="/admin">Goto Dashboard</a></div>
+        <h1 class="text-center mb-4">Client Messages</h1>
+       <div class="table">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody id="messagesTableBody">
+                <!-- Rows will be dynamically generated here -->
+            </tbody>
+        </table>
+       </div>
+    </div>
+
+    <script>
+        async function fetchMessages() {
+            try {
+                // Fetch data from the API
+                const response = await fetch('/api/admin/get-messages');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch messages');
+                }
+
+                // Parse JSON response
+                const messagesData = await response.json();
+                const messages=messagesData.data
+                
+
+                // Get the table body element
+                const tableBody = document.getElementById('messagesTableBody');
+
+                // Clear existing rows
+                tableBody.innerHTML = '';
+
+                // Populate table with data
+                messages.forEach((message, index) => {
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${message.name}</td>
+                            <td>${message.email}</td>
+                            <td>${message.subject}</td>
+                            <td>${message.message}</td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        }
+
+        // Fetch messages on page load
+        window.onload = fetchMessages;
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

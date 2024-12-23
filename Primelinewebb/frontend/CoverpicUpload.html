@@ -1,0 +1,117 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Heading and Subheading</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <a href="/admin">Goto Dashboard</a>
+        <h1 class="text-center mb-4">Add Heading and Subheading</h1>
+        <form id="uploadForm" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="heading">Heading:</label>
+                <input type="text" class="form-control" id="heading" name="heading" required>
+                <div class="invalid-feedback">
+                    Please provide a heading.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="subheading">Subheading:</label>
+                <input type="text" class="form-control" id="subheading" name="subheading" required>
+                <div class="invalid-feedback">
+                    Please provide a subheading.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div id="message" class="mt-3 alert alert-info" style="display:none;"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+         // Fetch all cover pictures on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/admin/get-all-cover-pics')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data.coverPics);
+
+                // Check if the length of the response is greater than 1
+                if (data.coverPics.length >= 1) {
+                    console.log("Response length greater than 1. Redirecting to /admin...");
+                    window.location.href = '/admin';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching cover pics:', error);
+            });
+    });
+   document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const heading = document.getElementById('heading').value;
+    const subheading = document.getElementById('subheading').value;
+
+    fetch('/api/admin/add-cover-pic', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ heading, subheading }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = data.message;
+        messageDiv.style.display = 'block';
+
+        if (data.success) {
+            messageDiv.classList.remove('alert-danger');
+            messageDiv.classList.add('alert-success');
+
+            // Log success for debugging
+            console.log("Form submitted successfully. Redirecting to /admin...");
+
+            // Redirect immediately
+            window.location.href = '/admin';
+        } else {
+            messageDiv.classList.remove('alert-success');
+            messageDiv.classList.add('alert-danger');
+            console.error("Error in response data:", data);
+            window.location.href = '/admin';
+
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = 'An error occurred while submitting the form.';
+        messageDiv.style.display = 'block';
+        messageDiv.classList.remove('alert-success');
+        messageDiv.classList.add('alert-danger');
+    });
+});
+
+
+    </script>
+</body>
+</html>

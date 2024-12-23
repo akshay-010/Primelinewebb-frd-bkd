@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>PRIMELINE-TRADINGCOMPANY</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <link href="/assets/img/brands/logocircle.png" rel="icon">
+
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+<style>
+  .cat-card{
+    width: 29%;
+    height: auto;
+    background-color: rgb(227, 227, 227);
+    border-radius: 10px;
+  }
+  .cat-image{
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .cat-caption{
+    text-align: center;
+    font-weight: 500;
+    padding: 5px 0;
+  }
+</style>
+</head>
+
+<body class="details-page">
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+    <a href="/">  <img src="/assets/img/brands/last_logo_.png" style="width: 130px; height: auto; float: left;"></a>
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/admin" ><button class="btn btn-danger">Back To Dashboard</button></a></li>
+          <li><a href="" id="editBrandLink" ><button class="btn btn-success">Edit This Brand Details</button></a></li>
+          <li><a href="" id="deleteBrand" ><button class="btn btn-danger">Delete This Brand</button></a></li>
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container position-relative">
+        <div>
+          <img  class="brand-image" id="brandImage" alt="Brand Image"  />
+          <h2 class="brand-name" id="brandName">PRIMELINE</h2>
+
+        </div>
+      
+       
+        <nav class="breadcrumbs">
+         
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Brand Details Section -->
+    <section id="brand-details" class="brand-details section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="brand-details-slider swiper init-swiper">
+
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 5000
+                  },
+                  "slidesPerView": "auto",
+                  "pagination": {
+                    "el": ".swiper-pagination",
+                    "type": "bullets",
+                    "clickable": true
+                  }
+                }
+              </script>
+
+              <div class="swiper-wrapper align-items-center" id="brandImageCarouselWrapper">
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="brand-info" data-aos="fade-up" data-aos-delay="200">
+              <h3>Brand Details</h3>
+              <ul>
+                <li><strong>Name</strong>: <span id="BrandDetailsBrandName">Loading...</span></li>
+                <li><strong>Tagline</strong>: <span id="brandDetailsTagLine">Loading...</span></li>
+                <li><strong>Discription</strong>:"<span id="missionStatement"></span>."</li>
+                <li><strong>core value  </strong>: <span id="coreValues"></span></li>
+              </ul>
+            </div>
+
+            <div class="brand-description" data-aos="fade-up" data-aos-delay="300">
+              <div class="grid-container-wrapper">
+                  <h3>Categories</h3>
+
+                  <div style="display: flex;gap: 15px;flex-wrap: wrap;justify-content: left;;" id="ctegory-container">
+                   
+                  </div>
+                  <div 
+                  style="display: flex;gap: 5px;flex-wrap: wrap;justify-content: center;" 
+                  id="ctegory-container">
+                
+                  </div>
+                </div>
+          </div>
+        </div>
+            
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Brand Details Section -->
+
+  </main>
+
+ 
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+   <script>
+    // Get the full URL
+  const url = window.location.href;
+
+// Extract the last part of the URL (brand ID)
+const brandId = url.substring(url.lastIndexOf('/') + 1);
+
+// Set the href dynamically
+const editBrandLink = document.getElementById('editBrandLink');
+editBrandLink.href = `/admin/update-brand/${brandId}`;
+document.getElementById('deleteBrand').addEventListener('click', function(e) {
+  e.preventDefault(); // Prevent the default action
+
+  // Display confirmation dialog
+  if (confirm('Are you sure you want to delete this brand?')) {
+
+    // Make the API call
+    fetch(`/api/admin/delete-brand/${brandId}`, {
+      method: 'DELETE',
+    })
+    .then(response => {
+      if (response.ok) {
+        // Handle success
+        alert('Brand deleted successfully!');
+        window.location.href='/admin'
+      } else {
+        // Handle errors
+        alert('Failed to delete the brand.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+});
+   </script>
+  <script src="/assets/js/brand.js"></script>
+
+</body>
+
+</html>
